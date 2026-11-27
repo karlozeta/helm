@@ -1,3 +1,4 @@
+
 annotations:
   sidecar.istio.io/inject: "false"
 
@@ -58,7 +59,7 @@ hpa:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
-          periodSeconds: 60
+  periodSeconds: 60
 
 pdb:
   enabled: true
