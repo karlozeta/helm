@@ -1,0 +1,2 @@
+microservice:
+  image: "ms-test:lastest"
