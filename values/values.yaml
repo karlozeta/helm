@@ -2,7 +2,7 @@ annotations:
   sidecar.istio.io/inject: "false"
 
 microservice:
-  namespace: microservice
+  # namespace: microservice
   replicas: 1
   port: 8080
   automountServiceAccountToken: false
