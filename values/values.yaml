@@ -1,0 +1,80 @@
+annotations:
+  sidecar.istio.io/inject: "false"
+
+microservice:
+  namespace: microservice
+  replicas: 1
+  port: 8080
+  automountServiceAccountToken: false
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  probes:
+    startup:
+      enabled: true
+      httpGet:
+        path: /actuator/health/liveness
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 60
+    liveness:
+      enabled: true
+      httpGet:
+        path: /actuator/health/liveness
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+    readiness:
+      enabled: true
+      httpGet:
+        path: /actuator/health/readiness
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 3
+  volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+
+# El chart fija readOnlyRootFilesystem: true; Java necesita un /tmp escribible.
+volumes:
+  - name: tmp
+    emptyDir: {}
+
+service:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      portName: http
+
+hpa:
+  enabled: false
+
+pdb:
+  enabled: false
+
+gateway:
+  enabled: false
+
+virtualService:
+  enabled: false
+
+requestAuthentication:
+  enabled: false
+
+authorizationPolicy:
+  enabled: false
+
+configmap:
+  data:
+    SERVER_PORT: "8080"
+    SERVER_ADDRESS: "0.0.0.0"
+    SPRING_APPLICATION_NAME: "ms-test"
+    MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,prometheus"
+    CORS_ALLOWED_ORIGINS: "http://localhost:4200,http://localhost:8080"
