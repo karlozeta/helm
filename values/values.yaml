@@ -53,6 +53,7 @@ service:
       portName: http
 
 hpa:
+  enabled: true
   minReplicas: 5
   maxReplicas: 20
   targetCPUUtilizationPercentage: 60
