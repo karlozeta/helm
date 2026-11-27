@@ -72,9 +72,28 @@ authorizationPolicy:
 
 configmap:
   data:
-    SERVER_PORT: "8080"
-    SERVER_ADDRESS: "0.0.0.0"
-    SPRING_APPLICATION_NAME: "ms-test"
-    MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
-    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,prometheus"
-    CORS_ALLOWED_ORIGINS: "http://localhost:4200,http://localhost:8080"
+    application.yml: |-
+      server:
+        port: 8080
+      spring:
+        application:
+          name: "MsTest"
+        devtools:
+          add-properties: false
+        h2:
+          console:
+            enabled: true
+            path: "/h2"
+        profiles:
+          include: null
+      management:
+        endpoints:
+          web:
+            exposure:
+              include: "health,prometheus"
+        endpoint:
+          health:
+            probes:
+              enabled: true
+      cors:
+        allowed-origins: "http://localhost:4200,http://localhost:8080"
